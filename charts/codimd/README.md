@@ -1,13 +1,8 @@
-# Local CodiMD Helm chart
+# CodiMD Helm Chart
 
-This chart deploys CodiMD and a single PostgreSQL instance for **local testing only**.
-By default both database and uploads use ephemeral storage; deleting/recreating Pods can lose data.
-Do not use the sample credentials for a network-exposed deployment.
+Deploy CodiMD to Kubernetes using an existing PostgreSQL database and a hostPath-backed PV/PVC for uploads. No PostgreSQL instance is deployed by this chart.
 
 ## Build image
-
-The upstream image build uses its own Node 16 buildpack/runtime images and is not yet modernized.
-From the repository root:
 
 ```sh
 docker build -f deployments/Dockerfile \
@@ -16,24 +11,12 @@ docker build -f deployments/Dockerfile \
   -t codimd-local:dev .
 ```
 
-Load the image into your local Kubernetes cluster (e.g. `kind load docker-image codimd-local:dev`),
-then:
+Load the image into your Kubernetes cluster, then deploy:
 
 ```sh
-helm upgrade --install codimd ./charts/codimd \
-  --set sessionSecret='replace-with-a-long-random-secret' \
-  --set database.password='local-only-password'
-kubectl port-forward svc/codimd-codimd 3000:3000
+helm upgrade --install codimd ./charts/codimd --namespace codimd --create-namespace
 ```
 
-Visit http://localhost:3000. For a persistent local environment, enable
-`database.persistence.enabled` and `uploads.persistence.enabled` and ensure a
-StorageClass exists. Credentials are stored in a Kubernetes Secret but are still
-present in Helm release history. This is not a production-ready chart.
+Configure `database.host`, `database.port`, `database.name`, `database.user`, and `database.password` in values or a private override file. The sample password is not suitable for production. Replace `sessionSecret` before exposing the service. Helm release metadata may retain supplied secrets.
 
-## Docker Compose alternative
-
-Run `docker compose -f compose.local.yaml up --build` from the repository root.
-The Compose setup uses named volumes for PostgreSQL and uploaded images and binds
-the web port to localhost only. Use `docker compose -f compose.local.yaml down`
-to stop; add `-v` only when you intend to delete local data.
+Uploads use `uploads.persistence.hostPath` on the Kubernetes node and mount into `/home/hackmd/app/public/uploads` in the container. The PV uses `Retain`; hostPath is node-local, so schedule the Pod on the node where this path exists. Ensure the directory is writable by the CodiMD process.

@@ -6,16 +6,15 @@ service:
   type: ClusterIP
   port: 3000
 database:
-  image: postgres:16-alpine
+  host: 10.78.26.223
+  port: 31432
   name: codimd
-  user: codimd
-  password: local-only-change-me
-  persistence:
-    enabled: false
-    size: 1Gi
+  user: asuscloud
+  password: password
 uploads:
   persistence:
-    enabled: false
-    size: 1Gi
+    enabled: true
+    size: 10Gi
+    hostPath: /Volumes/nfsshare/asus-paas-2/codimd/codimd
 sessionSecret: local-only-replace-before-exposure
 extraEnv: {}
