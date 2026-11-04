@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: codimd
+      POSTGRES_PASSWORD: local-only-password
+      POSTGRES_DB: codimd
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codimd -d codimd"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - codimd-db:/var/lib/postgresql/data
+  codimd:
+    build:
+      context: .
+      dockerfile: deployments/Dockerfile
+      args:
+        RUNTIME: hackmdio/runtime:16.20.2-35fe7e39
+        BUILDPACK: hackmdio/buildpack:16.20.2-35fe7e39
+    image: codimd-local:dev
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      CMD_DB_URL: postgres://codimd:local-only-password@db:5432/codimd
+      CMD_SESSION_SECRET: local-only-replace-before-exposure
+      CMD_USECDN: "false"
+      CMD_IMAGE_UPLOAD_TYPE: filesystem
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - codimd-uploads:/home/hackmd/app/public/uploads
+volumes:
+  codimd-db:
+  codimd-uploads:

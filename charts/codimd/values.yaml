@@ -1,0 +1,21 @@
+image:
+  repository: codimd-local
+  tag: dev
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 3000
+database:
+  image: postgres:16-alpine
+  name: codimd
+  user: codimd
+  password: local-only-change-me
+  persistence:
+    enabled: false
+    size: 1Gi
+uploads:
+  persistence:
+    enabled: false
+    size: 1Gi
+sessionSecret: local-only-replace-before-exposure
+extraEnv: {}

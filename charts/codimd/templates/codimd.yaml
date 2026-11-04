@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-codimd
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-codimd
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-codimd
+    spec:
+      containers:
+        - name: codimd
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: CMD_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-codimd
+                  key: CMD_DB_URL
+            - name: CMD_SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-codimd
+                  key: CMD_SESSION_SECRET
+            - name: CMD_USECDN
+              value: "false"
+            - name: CMD_IMAGE_UPLOAD_TYPE
+              value: filesystem
+            {{- range $name, $value := .Values.extraEnv }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          volumeMounts:
+            - name: uploads
+              mountPath: /home/hackmd/app/public/uploads
+      volumes:
+        - name: uploads
+          {{- if .Values.uploads.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-uploads
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-codimd
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Release.Name }}-codimd
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 3000
