@@ -1,8 +1,8 @@
 const common = require('./webpack.common.js')
 const htmlexport = require('./webpack.htmlexport')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const path = require('path')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = [
   merge(common, {
@@ -17,7 +17,7 @@ module.exports = [
     mode: 'production',
     optimization: {
       minimizer: [
-        new OptimizeCSSAssetsPlugin({})
+        '...', new CssMinimizerPlugin()
       ]
     }
   })]

@@ -129,21 +129,15 @@ module.exports = {
       filename: path.join(__dirname, 'public/views/build/slide-pack-scripts.ejs'),
       inject: false
     }),
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin({ patterns: [
       {
         context: path.join(__dirname, 'node_modules/mathjax'),
-        from: {
-          glob: '**/*',
-          dot: false
-        },
+        from: '**/*',
         to: 'MathJax/'
       },
       {
         context: path.join(__dirname, 'node_modules/@hackmd/emojify.js'),
-        from: {
-          glob: 'dist/**/*',
-          dot: false
-        },
+        from: 'dist/**/*',
         to: 'emojify.js/'
       },
       {
@@ -211,7 +205,7 @@ module.exports = {
         from: 'dist/mermaid.min.js',
         to: 'mermaid/mermaid.min.js'
       }
-    ]),
+    ] }),
     new MiniCssExtractPlugin(
       process.env.NODE_ENV === 'production'
       ? {
@@ -225,9 +219,9 @@ module.exports = {
   entry: {
     font: path.join(__dirname, 'public/css/google-font.css'),
     common: [
-      'expose-loader?jQuery!expose-loader?$!jquery',
+      'expose-loader?{"exposes":"jQuery"}!expose-loader?{"exposes":"$"}!jquery',
       'velocity-animate',
-      'imports-loader?$=jquery!jquery-mousewheel',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"jquery","name":"default","alias":"$"}]}!jquery-mousewheel',
       'bootstrap'
     ],
     cover: [
@@ -245,8 +239,8 @@ module.exports = {
       'core-js/stable',
       'regenerator-runtime/runtime',
       'bootstrap-validator',
-      'expose-loader?select2!select2',
-      'expose-loader?moment!moment',
+      'expose-loader?{"exposes":"select2"}!select2',
+      'expose-loader?{"exposes":"moment"}!moment',
       path.join(__dirname, 'public/js/cover.js')
     ],
     index: [
@@ -259,7 +253,7 @@ module.exports = {
       'script-loader!codemirrorInlineAttachment',
       'script-loader!ot',
       'flowchart.js',
-      'imports-loader?Raphael=raphael!js-sequence-diagrams',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"raphael","name":"default","alias":"Raphael"}]}!js-sequence-diagrams',
       path.join(__dirname, 'public/js/index.js')
     ],
     'index-styles': [
@@ -302,10 +296,10 @@ module.exports = {
       'regenerator-runtime/runtime',
       'script-loader!jquery-ui-resizable',
       'bootstrap-validator',
-      'expose-loader?jsyaml!js-yaml',
-      'expose-loader?moment!moment',
+      'expose-loader?{"exposes":"jsyaml"}!js-yaml',
+      'expose-loader?{"exposes":"moment"}!moment',
       'script-loader!handlebars',
-      'expose-loader?hljs!highlight.js',
+      'expose-loader?{"exposes":"hljs"}!highlight.js',
       'emojify.js',
       'script-loader!gist-embed',
       'script-loader!codemirror',
@@ -314,22 +308,22 @@ module.exports = {
       'script-loader!codemirrorInlineAttachment',
       'script-loader!ot',
       'flowchart.js',
-      'imports-loader?Raphael=raphael!js-sequence-diagrams',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"raphael","name":"default","alias":"Raphael"}]}!js-sequence-diagrams',
       'script-loader!viz.js',
       'script-loader!viz.render.js',
       'script-loader!abcjs',
       'script-loader!vega',
       'script-loader!vega-lite',
       'script-loader!vega-embed',
-      'expose-loader?io!socket.io-client',
-      'expose-loader?L!leaflet',
+      'expose-loader?{"exposes":"io"}!socket.io-client',
+      'expose-loader?{"exposes":"L"}!leaflet',
       path.join(__dirname, 'public/js/index.js')
     ],
     pretty: [
       'core-js/stable',
       'regenerator-runtime/runtime',
       'flowchart.js',
-      'imports-loader?Raphael=raphael!js-sequence-diagrams',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"raphael","name":"default","alias":"Raphael"}]}!js-sequence-diagrams',
       path.join(__dirname, 'public/js/pretty.js')
     ],
     'pretty-styles': [
@@ -346,21 +340,21 @@ module.exports = {
     'pretty-pack': [
       'core-js/stable',
       'regenerator-runtime/runtime',
-      'expose-loader?jsyaml!js-yaml',
-      'expose-loader?moment!moment',
+      'expose-loader?{"exposes":"jsyaml"}!js-yaml',
+      'expose-loader?{"exposes":"moment"}!moment',
       'script-loader!handlebars',
-      'expose-loader?hljs!highlight.js',
+      'expose-loader?{"exposes":"hljs"}!highlight.js',
       'emojify.js',
       'script-loader!gist-embed',
       'flowchart.js',
-      'imports-loader?Raphael=raphael!js-sequence-diagrams',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"raphael","name":"default","alias":"Raphael"}]}!js-sequence-diagrams',
       'script-loader!viz.js',
       'script-loader!viz.render.js',
       'script-loader!abcjs',
       'script-loader!vega',
       'script-loader!vega-lite',
       'script-loader!vega-embed',
-      'expose-loader?L!leaflet',
+      'expose-loader?{"exposes":"L"}!leaflet',
       path.join(__dirname, 'public/js/pretty.js')
     ],
     slide: [
@@ -368,7 +362,7 @@ module.exports = {
       'regenerator-runtime/runtime',
       'bootstrap-tooltip',
       'flowchart.js',
-      'imports-loader?Raphael=raphael!js-sequence-diagrams',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"raphael","name":"default","alias":"Raphael"}]}!js-sequence-diagrams',
       path.join(__dirname, 'public/js/slide.js')
     ],
     'slide-styles': [
@@ -384,26 +378,26 @@ module.exports = {
     'slide-pack': [
       'core-js/stable',
       'regenerator-runtime/runtime',
-      'expose-loader?jQuery!expose-loader?$!jquery',
+      'expose-loader?{"exposes":"jQuery"}!expose-loader?{"exposes":"$"}!jquery',
       'velocity-animate',
-      'imports-loader?$=jquery!jquery-mousewheel',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"jquery","name":"default","alias":"$"}]}!jquery-mousewheel',
       'bootstrap-tooltip',
-      'expose-loader?jsyaml!js-yaml',
-      'expose-loader?moment!moment',
+      'expose-loader?{"exposes":"jsyaml"}!js-yaml',
+      'expose-loader?{"exposes":"moment"}!moment',
       'script-loader!handlebars',
-      'expose-loader?hljs!highlight.js',
+      'expose-loader?{"exposes":"hljs"}!highlight.js',
       'emojify.js',
       'script-loader!gist-embed',
       'flowchart.js',
-      'imports-loader?Raphael=raphael!js-sequence-diagrams',
+      'imports-loader?{"imports":[{"syntax":"named","moduleName":"raphael","name":"default","alias":"Raphael"}]}!js-sequence-diagrams',
       'script-loader!viz.js',
       'script-loader!viz.render.js',
       'script-loader!abcjs',
       'script-loader!vega',
       'script-loader!vega-lite',
       'script-loader!vega-embed',
-      'expose-loader?Reveal!reveal.js',
-      'expose-loader?L!leaflet',
+      'expose-loader?{"exposes":"Reveal"}!reveal.js',
+      'expose-loader?{"exposes":"L"}!leaflet',
       path.join(__dirname, 'public/js/slide.js')
     ]
   },
@@ -415,6 +409,7 @@ module.exports = {
   },
 
   resolve: {
+    fallback: { fs: false, os: false, path: require.resolve('path-browserify'), util: require.resolve('util/') },
     modules: ['node_modules'],
     extensions: ['.js', '.mjs'],
     alias: {
@@ -575,11 +570,6 @@ module.exports = {
       }]
     }]
   },
-  node: {
-    fs: 'empty',
-    os: 'empty'
-  },
-
   stats: {
     assets: false
   }
