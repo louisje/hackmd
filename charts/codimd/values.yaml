@@ -1,0 +1,21 @@
+image:
+  repository: hackmd
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 31012
+database:
+  host: some-postgresql.asus-paas-2.svc.cluster.local
+  port: 5432
+  name: codimd
+  user: asuscloud
+  password: password
+uploads:
+  persistence:
+    enabled: true
+    size: 10Gi
+    hostPath: /Volumes/nfsshare/asus-paas-2/codimd/codimd
+sessionSecret: local-only-replace-before-exposure
+extraEnv: {}

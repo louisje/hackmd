@@ -7,8 +7,26 @@ if [[ "$#" -gt 0 ]]; then
     exit $?
 fi
 
-# check database and redis is ready
-pcheck -env CMD_DB_URL
+# Wait until the configured PostgreSQL endpoint accepts TCP connections.
+node - <<'NODE'
+const net = require('node:net')
+const url = new URL(process.env.CMD_DB_URL)
+const port = Number(url.port || 5432)
+let attempts = 0
+function check () {
+  const socket = net.connect({ host: url.hostname, port })
+  socket.setTimeout(3000)
+  socket.once('connect', () => { socket.destroy(); process.exit(0) })
+  const retry = () => {
+    socket.destroy()
+    if (++attempts >= 30) { console.error('Database is not reachable'); process.exit(1) }
+    setTimeout(check, 2000)
+  }
+  socket.once('error', retry)
+  socket.once('timeout', retry)
+}
+check()
+NODE
 
 # run DB migrate
 NEED_MIGRATE=${CMD_AUTO_MIGRATE:=true}

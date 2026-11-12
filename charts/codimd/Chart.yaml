@@ -1,0 +1,6 @@
+apiVersion: v2
+name: codimd
+description: Local development chart for CodiMD
+type: application
+version: 0.1.0
+appVersion: "2.6.1"
