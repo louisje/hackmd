@@ -135,7 +135,6 @@
     "ejs-loader": "^0.5.0",
     "exports-loader": "~0.7.0",
     "expose-loader": "^5.0.1",
-    "file-loader": "~2.0.0",
     "file-saver": "~2.0.2",
     "flowchart.js": "~1.15.0",
     "fork-awesome": "~1.1.7",
@@ -181,7 +180,6 @@
     "mocha": "~5.2.0",
     "mock-require": "~3.0.3",
     "nyc": "~14.0.0",
-    "optimize-css-assets-webpack-plugin": "~5.0.0",
     "papaparse": "^5.2.0",
     "path-browserify": "^1.0.1",
     "pdfobject": "~2.2.4",
@@ -203,7 +201,6 @@
     "tedious": "~6.2.0",
     "turndown": "^7.1.1",
     "typo-js": "^1.0.3",
-    "url-loader": "~1.0.1",
     "util": "^0.12.5",
     "vega": "^5.25.0",
     "vega-embed": "~6.14.2",
@@ -214,7 +211,6 @@
     "webpack": "^5.112.2",
     "webpack-cli": "^6.0.1",
     "webpack-merge": "^6.0.1",
-    "webpack-parallel-uglify-plugin": "~1.1.0",
     "wurl": "~2.5.3",
     "xss": "~1.0.6"
   },
@@ -223,7 +219,7 @@
     "utf-8-validate": "~5.0.1"
   },
   "engines": {
-    "node": ">=14.0.0 <17.0.0"
+    "node": ">=26.0.0 <27.0.0"
   },
   "maintainers": [
     {

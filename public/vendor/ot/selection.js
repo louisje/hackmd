@@ -6,7 +6,7 @@ if (typeof ot === 'undefined') {
 ot.Selection = (function (global) {
   'use strict';
 
-  var TextOperation = global.ot ? global.ot.TextOperation : require('./text-operation');
+  var TextOperation = ot.TextOperation;
 
   // Range has `anchor` and `head` properties, which are zero-based indices into
   // the document. The `anchor` is the side of the selection that stays fixed,

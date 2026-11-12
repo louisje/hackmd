@@ -13,6 +13,7 @@ module.exports = {
   name: 'app',
   plugins: [
     new webpack.ProvidePlugin({
+      process: 'process/browser',
       Visibility: 'visibilityjs',
       Cookies: 'js-cookie',
       key: 'keymaster',
@@ -463,7 +464,7 @@ module.exports = {
         options: {
           presets: [
             ['@babel/preset-env', {
-              modules: 'cjs'
+              modules: false
             }]
           ]
         }
@@ -525,44 +526,34 @@ module.exports = {
       ]
     }, {
       test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-      use: [{ loader: 'file-loader' }]
+      type: 'asset/resource'
     }, {
       test: /\.html$/,
       use: [{ loader: 'string-loader' }]
     }, {
       test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: { prefix: 'font/', limit: '5000' }
-      }]
+      type: 'asset',
+      parser: { dataUrlCondition: { maxSize: 5000 } }
     }, {
       test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: { limit: '5000', mimetype: 'application/octet-stream' }
-      }]
+      type: 'asset',
+      parser: { dataUrlCondition: { maxSize: 5000 } }
     }, {
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
       exclude: path.resolve(__dirname, 'public/js/lib/renderer/fretboard'),
-      use: [{
-        loader: 'url-loader',
-        options: { limit: '10000', mimetype: 'svg+xml' }
-      }]
+      type: 'asset',
+      parser: { dataUrlCondition: { maxSize: 10000 } }
     }, {
       test: /.*\/fretboard\/svg\/.*\.svg$/,
       loader: 'string-loader'
     }, {
       test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: { limit: '10000', mimetype: 'image/png' }
-      }]
+      type: 'asset',
+      parser: { dataUrlCondition: { maxSize: 10000 } }
     }, {
       test: /\.gif(\?v=\d+\.\d+\.\d+)?$/,
-      use: [{
-        loader: 'url-loader',
-        options: { limit: '10000', mimetype: 'image/gif' }
-      }]
+      type: 'asset',
+      parser: { dataUrlCondition: { maxSize: 10000 } }
     }, {
       test: /@hackmd\/codemirror\/addon\/lint\/lint/,
       use: [{
