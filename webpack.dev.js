@@ -5,9 +5,11 @@ const { merge } = require('webpack-merge')
 module.exports = [
   merge(common, {
     mode: 'development',
-    devtool: 'eval-cheap-module-source-map'
+    devtool: 'source-map',
+    optimization: { minimize: false }
   }),
   merge(htmlexport, {
     mode: 'development',
-    devtool: 'eval-cheap-module-source-map'
+    devtool: 'source-map',
+    optimization: { minimize: false }
   })]
