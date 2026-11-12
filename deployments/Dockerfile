@@ -1,6 +1,8 @@
-ARG RUNTIME
-ARG BUILDPACK
-FROM $BUILDPACK AS BUILD
+ARG NODE_IMAGE=node:26-bookworm
+FROM ${NODE_IMAGE} AS build
+RUN groupadd -g 1500 hackmd && useradd -m -u 1500 -g 1500 hackmd
+USER hackmd
+WORKDIR /home/hackmd/app
 ARG CODIMD_DEBUG_BUNDLE=0
 ARG TARGETARCH
 ENV CODIMD_DEBUG_BUNDLE=$CODIMD_DEBUG_BUNDLE
@@ -23,11 +25,14 @@ RUN set -xe && \
         package-lock.json webpack.prod.js webpack.htmlexport.js webpack.dev.js webpack.common.js \
         config.json.example README.md CONTRIBUTING.md AUTHORS
 
-FROM $RUNTIME
+FROM ${NODE_IMAGE} AS runtime
+RUN groupadd -g 1500 hackmd && useradd -m -u 1500 -g 1500 hackmd && \
+    apt-get update && apt-get install -y --no-install-recommends imagemagick && \
+    rm -rf /var/lib/apt/lists/*
 USER hackmd
 ENV QT_QPA_PLATFORM=offscreen
 WORKDIR /home/hackmd/app
-COPY --chown=1500:1500 --from=BUILD /home/hackmd/app .
+COPY --chown=1500:1500 --from=build /home/hackmd/app .
 RUN npm prune --omit=dev --ignore-scripts && npm cache clean --force && rm -rf /tmp/{core-js-banners,phantomjs}
 EXPOSE 3000
 ENTRYPOINT ["/home/hackmd/app/docker-entrypoint.sh"]

@@ -5,14 +5,10 @@ on:
     types: [published]
   workflow_dispatch:
     inputs:
-      runtime:
-        description: 'Runtime image'
+      node_image:
+        description: 'Node.js 26 base image'
         required: true
-        default: 'hackmdio/runtime:16.20.2-35fe7e39'
-      buildpack:
-        description: 'Buildpack image'
-        required: true
-        default: 'hackmdio/buildpack:16.20.2-35fe7e39'
+        default: 'node:26-bookworm'
 
 env:
   REGISTRY_IMAGE: hackmdio/hackmd
@@ -64,8 +60,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
           build-args: |
-            RUNTIME=${{ github.event.inputs.runtime || 'hackmdio/runtime:16.20.2-35fe7e39' }}
-            BUILDPACK=${{ github.event.inputs.buildpack || 'hackmdio/buildpack:16.20.2-35fe7e39' }}
+            NODE_IMAGE=${{ github.event.inputs.node_image || 'node:26-bookworm' }}
       -
         name: Export digest
         run: |
