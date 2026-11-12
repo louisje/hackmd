@@ -67,3 +67,6 @@ spec:
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 3000
+      {{- if eq .Values.service.type "NodePort" }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}

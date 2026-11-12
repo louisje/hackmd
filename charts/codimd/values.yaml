@@ -1,13 +1,14 @@
 image:
-  repository: codimd-local
-  tag: dev
+  repository: hackmd
+  tag: latest
   pullPolicy: IfNotPresent
 service:
-  type: ClusterIP
+  type: NodePort
   port: 3000
+  nodePort: 31012
 database:
-  host: 10.78.26.223
-  port: 31432
+  host: some-postgresql.asus-paas-2.svc.cluster.local
+  port: 5432
   name: codimd
   user: asuscloud
   password: password
