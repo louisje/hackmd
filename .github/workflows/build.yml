@@ -34,7 +34,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
         check-latest: true
 
-    - run: npm ci
+    - run: npm ci --ignore-scripts
+    - name: Install Pandoc 3.1.11
+      run: |
+        mkdir -p node_modules/@hackmd/pandoc.js/.pandoc-local
+        curl -fL --retry 3 https://github.com/jgm/pandoc/releases/download/3.1.11/pandoc-3.1.11-linux-amd64.tar.gz -o /tmp/pandoc.tar.gz
+        tar -xzf /tmp/pandoc.tar.gz -C /tmp
+        cp /tmp/pandoc-3.1.11/bin/pandoc node_modules/@hackmd/pandoc.js/.pandoc-local/pandoc
     - run: npm run test:ci
     - run: npm run build
 
