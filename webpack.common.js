@@ -134,7 +134,12 @@ module.exports = {
       {
         context: path.join(__dirname, 'node_modules/mathjax'),
         from: '**/*',
-        to: 'MathJax/'
+        to: 'MathJax/',
+        // MathJax mathmaps are JSON data stored with a .js extension.
+        // Keep them intact instead of passing them to the JS minimizer.
+        info: ({ sourceFilename }) => ({
+          minimized: /(?:^|\/)extensions\/a11y\/mathmaps\/[^/]+\.js$/.test(sourceFilename)
+        })
       },
       {
         context: path.join(__dirname, 'node_modules/@hackmd/emojify.js'),
