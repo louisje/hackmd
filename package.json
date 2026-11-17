@@ -246,5 +246,10 @@
       "lib/**/*.js"
     ],
     "reporter": "lcov"
+  },
+  "overrides": {
+    "@hackmd/pandoc.js": {
+      "tar": "^7.5.23"
+    }
   }
 }
