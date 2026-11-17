@@ -95,7 +95,6 @@
     "read-chunk": "^3.2.0",
     "readline-sync": "~1.4.7",
     "regenerator-runtime": "^0.14.0",
-    "request": "~2.88.0",
     "scrypt-kdf": "^2.0.1",
     "sequelize": "^6.37.8",
     "sequelize-cli": "^6.6.5",
