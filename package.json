@@ -131,7 +131,7 @@
     "dictionary-de-at": "^2.0.3",
     "dictionary-de-ch": "^2.0.3",
     "dictionary-en-gb": "^2.2.2",
-    "doctoc": "~1.4.0",
+    "doctoc": "^2.5.0",
     "ejs-loader": "^0.5.0",
     "exports-loader": "~0.7.0",
     "expose-loader": "^5.0.1",
