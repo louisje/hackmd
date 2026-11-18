@@ -248,6 +248,9 @@
   "overrides": {
     "@hackmd/pandoc.js": {
       "tar": "^7.5.23"
+    },
+    "xtraverse": {
+      "xmldom": "npm:@xmldom/xmldom@^0.8.15"
     }
   }
 }
