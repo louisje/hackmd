@@ -99,7 +99,7 @@
     "socket.io": "~2.2.0",
     "toobusy-js": "~0.5.1",
     "uuid": "~3.3.2",
-    "validator": "~11.1.0",
+    "validator": "^13.15.35",
     "winston": "^3.8.2",
     "ws": "~7.1.1"
   },
