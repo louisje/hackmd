@@ -45,7 +45,7 @@
     "base64url": "~3.0.1",
     "body-parser": "^1.20.2",
     "chance": "~1.0.18",
-    "cheerio": "~0.22.0",
+    "cheerio": "^1.2.0",
     "connect-flash": "~0.1.1",
     "connect-session-sequelize": "^8.0.6",
     "cookie": "~0.4.0",
