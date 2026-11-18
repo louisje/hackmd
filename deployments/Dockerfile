@@ -12,10 +12,9 @@ ENV QT_QPA_PLATFORM=offscreen
 
 RUN set -xe && \
     npm ci --ignore-scripts && \
-    mkdir -p node_modules/@hackmd/pandoc.js/.pandoc-local && \
     curl -fL --retry 3 "https://github.com/jgm/pandoc/releases/download/3.1.11/pandoc-3.1.11-linux-${TARGETARCH}.tar.gz" -o /tmp/pandoc.tar.gz && \
     tar -xzf /tmp/pandoc.tar.gz -C /tmp && \
-    cp /tmp/pandoc-3.1.11/bin/pandoc node_modules/@hackmd/pandoc.js/.pandoc-local/pandoc && \
+    cp /tmp/pandoc-3.1.11/bin/pandoc /tmp/pandoc && \
     rm -rf /tmp/pandoc.tar.gz /tmp/pandoc-3.1.11 && \
     npm run build && \
     cp ./deployments/docker-entrypoint.sh ./ && \
@@ -32,6 +31,7 @@ RUN groupadd -g 1500 hackmd && useradd -m -u 1500 -g 1500 hackmd && \
 USER hackmd
 ENV QT_QPA_PLATFORM=offscreen
 WORKDIR /home/hackmd/app
+COPY --from=build /tmp/pandoc /usr/local/bin/pandoc
 COPY --chown=1500:1500 --from=build /home/hackmd/app .
 RUN npm prune --omit=dev --ignore-scripts && npm cache clean --force && rm -rf /tmp/core-js-banners
 EXPOSE 3000
