@@ -19,3 +19,5 @@ uploads:
     hostPath: /Volumes/nfsshare/asus-paas-2/codimd/codimd
 sessionSecret: local-only-replace-before-exposure
 extraEnv: {}
+# Optional container security context. Localhost seccomp profiles must be installed on each node.
+securityContext: {}
