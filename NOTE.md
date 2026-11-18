@@ -28,9 +28,14 @@
 - 已升級 Less、移除未使用的 jsdom-nogyp、升級 Tedious、替換 Twitter strategy 的 xmldom。
 - 以 Puppeteer + 系統 Chromium 取代 markdown-pdf／PhantomJS。保留 sandbox，禁止原始 HTML、JavaScript 與外部資源載入；本機 raster uploads 單張 10 MiB、合計 20 MiB，每 process 最多兩個並行渲染，超量回傳 HTTP 503。
 - Docker 與 amd64 OCI seccomp profile 已通過容器 PDF 測試；Helm 支援 Localhost profile。Kubernetes 實際部署、arm64、真實 SQL Server 連線尚未驗證。部署方式見 `deployments/chromium-seccomp.md`。
-- Lint 通過，137 項測試通過；production build 通過（並行限制加入前）。
-- 最新 audit：production 45（0 critical、22 high、17 moderate、6 low）；完整 97（0 critical、60 high、25 moderate、12 low）。初始完整 214，critical 25 已降至 0。
-- 下一步：優先處理 production high，逐組驗證，避免直接使用 audit fix --force。
+- 前期驗證紀錄：137 項測試通過；production audit 曾為 45（0 Critical、22 High、17 Moderate、6 Low），完整 audit 曾為 97（0 Critical、60 High、25 Moderate、12 Low）。以下為同日後續更新。
+- 已移除舊版 fetch polyfill，升級 validator、cheerio、markdown-it；S3／MinIO 上傳改用 AWS SDK v3；以 `lib/note/metadata.js` 取代舊版 metadata parser。
+- Pandoc：移除 `@hackmd/pandoc.js`，改以 `lib/note/pandoc.js` 使用 `execFile` 呼叫系統 Pandoc；Docker runtime 與 CI 安裝路徑已調整；本機 Pandoc 3.13 匯出 smoke test 通過。
+- Socket.IO：Server／Client 由 2.2 升至 4.8.4；移除 `ws` 直接依賴與 `passport.socketio`，改用 `lib/realtime/socketAuth.js` 維持 signed cookie／Session Store／Passport 與匿名協作；調整心跳、Map／Set、前端連線錯誤與重連事件。
+- 新增 Socket.IO 真實 HTTP 連線整合測試（Cookie 拒絕、匿名與登入 Session、Room 編輯廣播、重連）；完整回歸測試 **147 passing、0 failing**，Lint 與 production build 通過。曾有 1 項 `cleanDanglingUser` 測試因 Socket ID key 型別不一致失敗，已修正。
+- **最新 production audit（2026-11-18）**：19（0 Critical、0 High、15 Moderate、4 Low），由今日初始 57（3 Critical、25 High、23 Moderate、6 Low）下降；完整 dev audit 未在本輪重新量測，不應將先前 97 當成最新數字。
+- 提交：`2e562f84`、`dd4fca51`、`75eac0bd`、`bf6f5036`、`99cd3ccf`、`f2282888`、`d26e770d`、`dd8b84cb`（另有前期提交）；分支 `feat/dependency-security` **尚未推送**。
+- 待驗證：實際瀏覽器多人協作、Session／匿名權限、斷線重連、Kubernetes／Helm 部署、PDF／Pandoc HTTP 端到端、真實 S3／MinIO 與 SQL Server、arm64 runtime；評估剩餘 Moderate／Low。避免直接使用 `npm audit fix --force`。
 
 ## 待辦清單（依序推進）
 
