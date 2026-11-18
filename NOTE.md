@@ -18,6 +18,20 @@
 - 初次 `npm outdated --depth=0`：76 個回報項目；當時依賴未完整安裝，`current` 欄位缺失，須重跑以取得可靠對照。
 - 已執行 `npm install`；須確認安裝退出狀態、lockfile 差異、完整測試及可重現性。
 
+## 待辦補充（2026-11-17）
+
+- [x] **修正 `.nvmrc`**：已改為 `26`，本機以 Node.js 26.13.1 驗證；CI 與 Docker 使用 Node.js 26。
+
+## 安全升級進度（2026-11-18）
+
+- 目前分支：`feat/dependency-security`。Webpack 5、Node.js 26、GHCR 與 Docker 建置已完成前階段遷移。
+- 已升級 Less、移除未使用的 jsdom-nogyp、升級 Tedious、替換 Twitter strategy 的 xmldom。
+- 以 Puppeteer + 系統 Chromium 取代 markdown-pdf／PhantomJS。保留 sandbox，禁止原始 HTML、JavaScript 與外部資源載入；本機 raster uploads 單張 10 MiB、合計 20 MiB，每 process 最多兩個並行渲染，超量回傳 HTTP 503。
+- Docker 與 amd64 OCI seccomp profile 已通過容器 PDF 測試；Helm 支援 Localhost profile。Kubernetes 實際部署、arm64、真實 SQL Server 連線尚未驗證。部署方式見 `deployments/chromium-seccomp.md`。
+- Lint 通過，137 項測試通過；production build 通過（並行限制加入前）。
+- 最新 audit：production 45（0 critical、22 high、17 moderate、6 low）；完整 97（0 critical、60 high、25 moderate、12 low）。初始完整 214，critical 25 已降至 0。
+- 下一步：優先處理 production high，逐組驗證，避免直接使用 audit fix --force。
+
 ## 待辦清單（依序推進）
 
 - [ ] **0. 建立基準**：確認 `npm install` 結果、`git diff`、`npm ls`、`npm outdated`、`npm audit --omit=dev` 與完整 audit；記錄 npm scripts、CI、Helm 建置方式；執行現有 lint/test/build 並保存失敗原因。
