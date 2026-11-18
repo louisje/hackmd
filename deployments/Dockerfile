@@ -27,12 +27,12 @@ RUN set -xe && \
 
 FROM ${NODE_IMAGE} AS runtime
 RUN groupadd -g 1500 hackmd && useradd -m -u 1500 -g 1500 hackmd && \
-    apt-get update && apt-get install -y --no-install-recommends imagemagick && \
+    apt-get update && apt-get install -y --no-install-recommends imagemagick chromium chromium-sandbox fonts-noto-cjk && \
     rm -rf /var/lib/apt/lists/*
 USER hackmd
 ENV QT_QPA_PLATFORM=offscreen
 WORKDIR /home/hackmd/app
 COPY --chown=1500:1500 --from=build /home/hackmd/app .
-RUN npm prune --omit=dev --ignore-scripts && npm cache clean --force && rm -rf /tmp/{core-js-banners,phantomjs}
+RUN npm prune --omit=dev --ignore-scripts && npm cache clean --force && rm -rf /tmp/core-js-banners
 EXPOSE 3000
 ENTRYPOINT ["/home/hackmd/app/docker-entrypoint.sh"]
