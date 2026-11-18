@@ -80,7 +80,6 @@
     "passport-local": "~1.0.0",
     "passport-oauth2": "^1.6.1",
     "passport-twitter": "~1.0.4",
-    "passport.socketio": "~3.7.0",
     "pg": "~8.8.0",
     "pg-hstore": "~2.3.2",
     "prom-client": "^11.0.0",
@@ -94,12 +93,11 @@
     "sequelize": "^6.37.8",
     "sequelize-cli": "^6.6.5",
     "shortid": "~2.2.14",
-    "socket.io": "~2.2.0",
+    "socket.io": "^4.8.4",
     "toobusy-js": "~0.5.1",
     "uuid": "~3.3.2",
     "validator": "^13.15.35",
-    "winston": "^3.8.2",
-    "ws": "~7.1.1"
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
@@ -186,7 +184,7 @@
     "script-loader": "~0.7.2",
     "select2": "~3.5.2-browserify",
     "sinon": "~7.3.2",
-    "socket.io-client": "~2.2.0",
+    "socket.io-client": "^4.8.4",
     "spin.js": "~4.0.0",
     "standard": "~13.1.0",
     "store": "~2.0.12",

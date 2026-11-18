@@ -13,7 +13,7 @@ var fs = require('fs')
 var path = require('path')
 
 var morgan = require('morgan')
-var passportSocketIo = require('passport.socketio')
+const { authorizeSocket } = require('./lib/realtime/socketAuth')
 var helmet = require('helmet')
 var i18n = require('i18n')
 var flash = require('connect-flash')
@@ -69,10 +69,10 @@ app.use(morgan('combined', {
 }))
 
 // socket io
-var io = require('socket.io')(server)
-io.engine.ws = new (require('ws').Server)({
-  noServer: true,
-  perMessageDeflate: false
+var io = require('socket.io')(server, {
+  perMessageDeflate: false,
+  pingInterval: config.heartbeatInterval,
+  pingTimeout: config.heartbeatTimeout
 })
 
 // others
@@ -237,17 +237,7 @@ app.get('*', function (req, res) {
 // socket.io secure
 io.use(realtime.secure)
 // socket.io auth
-io.use(passportSocketIo.authorize({
-  cookieParser: cookieParser,
-  key: config.sessionName,
-  secret: config.sessionSecret,
-  store: sessionStore,
-  success: realtime.onAuthorizeSuccess,
-  fail: realtime.onAuthorizeFail
-}))
-// socket.io heartbeat
-io.set('heartbeat interval', config.heartbeatInterval)
-io.set('heartbeat timeout', config.heartbeatTimeout)
+io.use(authorizeSocket(sessionStore, passport))
 // socket.io connection
 io.sockets.on('connection', realtime.connection)
 
@@ -303,8 +293,7 @@ function handleTermSignals () {
   realtime.maintenance = true
   realtime.terminate()
   // disconnect all socket.io clients
-  Object.keys(io.sockets.sockets).forEach(function (key) {
-    var socket = io.sockets.sockets[key]
+  io.sockets.sockets.forEach(function (socket) {
     // notify client server going into maintenance status
     socket.emit('maintenance')
     setTimeout(function () {

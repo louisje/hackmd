@@ -1677,7 +1677,7 @@ window.havePermission = havePermission
 // socket.io actions
 var io = require('socket.io-client')
 var socket = io.connect({
-  path: urlpath ? '/' + urlpath + '/socket.io/' : '',
+  path: urlpath ? '/' + urlpath + '/socket.io/' : '/socket.io/',
   query: {
     noteId: noteid
   },
@@ -1707,7 +1707,7 @@ socket.on('info', function (data) {
       break
   }
 })
-socket.on('error', function (data) {
+socket.on('connect_error', function (data) {
   console.error(data)
   if (data.message && data.message.indexOf('AUTH failed') === 0) { location.href = serverurl + '/403' }
 })
@@ -1741,7 +1741,7 @@ socket.on('disconnect', function (data) {
     }, 1000)
   }
 })
-socket.on('reconnect', function (data) {
+socket.io.on('reconnect', function (data) {
   // sync back any change in offline
   emitUserStatus(true)
   cursorActivity(editor)
