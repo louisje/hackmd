@@ -436,7 +436,7 @@ module.exports = {
       'vega-lite': path.join(__dirname, 'node_modules/vega-lite/build/vega-lite.min.js'),
       'vega-embed': path.join(__dirname, 'node_modules/vega-embed/build/vega-embed.min.js'),
       'emojify.js': path.join(__dirname, 'node_modules/@hackmd/emojify.js/dist/js/emojify-browser.min.js'),
-      'markdown-it': path.join(__dirname, 'node_modules/markdown-it/dist/markdown-it.js'),
+      'markdown-it$': require.resolve('markdown-it/browser'),
       'viz.js': path.join(__dirname, 'node_modules/viz.js/viz.js'),
       'viz.render.js': path.join(__dirname, 'node_modules/viz.js/full.render.js'),
       markdownlint: path.join(__dirname, 'node_modules/markdownlint/demo/markdownlint-browser.js')
