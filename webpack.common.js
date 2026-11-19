@@ -321,7 +321,7 @@ module.exports = {
       'script-loader!vega',
       'script-loader!vega-lite',
       'script-loader!vega-embed',
-      'expose-loader?{"exposes":"io"}!socket.io-client',
+      'script-loader!socket.io-client/dist/socket.io.js',
       'expose-loader?{"exposes":"L"}!leaflet',
       path.join(__dirname, 'public/js/index.js')
     ],
