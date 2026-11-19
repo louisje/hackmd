@@ -1,6 +1,24 @@
 Release Notes
 ===
 
+<i class="fa fa-tag"></i> 2.6.2 <i class="fa fa-clock-o"></i> 2026-11-19
+---
+
+This release is maintained by the [louisje/hackmd fork](https://github.com/louisje/hackmd), independently of upstream CodiMD.
+
+## Enhancements
+
+- Upgrade the runtime and CI to Node.js 26 and modernize outdated dependencies, including Markdown, database, and upload integrations. [#2](https://github.com/louisje/hackmd/pull/2)
+- Replace the legacy PhantomJS-based PDF renderer with Chromium and add container sandbox configuration. [#2](https://github.com/louisje/hackmd/pull/2)
+- Publish multi-architecture container images to GitHub Container Registry. [#1](https://github.com/louisje/hackmd/pull/1)
+
+## Fixes
+
+- Upgrade Socket.IO to v4, migrate session authentication, and add realtime integration tests. [#2](https://github.com/louisje/hackmd/pull/2)
+- Fix a blank editor page caused by CommonJS `require()` in the browser bundle. [#2](https://github.com/louisje/hackmd/pull/2)
+- Replace vulnerable or obsolete dependencies and reduce the production dependency audit findings. [#2](https://github.com/louisje/hackmd/pull/2)
+
+
 <i class="fa fa-tag"></i> 2.6.1 <i class="fa fa-clock-o"></i> 2025-10-01
 ---
 
