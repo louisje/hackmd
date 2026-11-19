@@ -46,16 +46,17 @@ describe('cleanDanglingUser', function () {
         }
       }),
       sockets: {
-        connected: {}
+        sockets: new Map()
       }
     }
     const user1Socket = makeMockSocket()
     const user2Socket = makeMockSocket()
 
-    user1Socket.rooms.push('room1')
+    user1Socket.rooms = new Set(['room1'])
+    user2Socket.rooms = new Set()
 
-    realtime.io.sockets.connected[user1Socket.id] = user1Socket
-    realtime.io.sockets.connected[user2Socket.id] = user2Socket
+    realtime.io.sockets.sockets.set(String(user1Socket.id), user1Socket)
+    realtime.io.sockets.sockets.set(String(user2Socket.id), user2Socket)
 
     realtime.users[user1Socket.id] = user1Socket
     realtime.users[user2Socket.id] = user2Socket
